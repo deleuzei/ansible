@@ -1,0 +1,15 @@
+---
+- name: update master node peer section with new peer
+  blockinfile:
+    path: '/etc/wireguard/wg0.conf'
+    marker: "{mark}"
+    marker_begin: "\n# ANSIBLE MANAGED BLOCK BEGIN #\n{{ inventory_hostname_short }}"
+    marker_end: "# ANSIBLE MANAGED BLOCK END"
+    block: |
+      [Peer]
+      PublicKey = {{ node_pubkey }}
+      AllowedIPs = {{ internal_ip }}
+      PersistentKeepalive = 25
+  delegate_to:  "{{ hostvars['master_node']['ansible_host'] }}"
+  remote_user: vagrant
+  become: true

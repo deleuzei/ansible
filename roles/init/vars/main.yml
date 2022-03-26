@@ -1,0 +1,15 @@
+---
+packages:
+    - net-tools 
+    - tree 
+    - git
+    - rsync
+    - zsh
+    - tmux
+    - vim
+    - curl
+    - wget
+    - git
+    - htop
+    - speedtest-cli
+ansible_python_interpreter: "/usr/bin/python3"

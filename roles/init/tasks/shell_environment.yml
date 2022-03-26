@@ -1,0 +1,67 @@
+---
+- name: set git default branch name
+  git_config:
+    scope: global
+    name: init.defaultBranch
+    value: main
+
+- name: install oh-my-zsh
+  shell: 
+    cmd: sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --skip-chsh
+    creates: "{{ ansible_user_dir }}/.oh-my-zsh"
+
+- name: install powerlevel10k
+  git:
+    repo: "https://github.com/romkatv/powerlevel10k.git"
+    dest: "{{ ansible_user_dir }}/.powerlevel10k"
+    update: no
+
+- name: install zsh syntax highlighting 
+  git:
+    repo: "https://github.com/zsh-users/zsh-syntax-highlighting.git"
+    dest: "{{ ansible_user_dir }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+    update: no
+
+- name: install zsh completions 
+  git:
+    repo: "https://github.com/zsh-users/zsh-completions"
+    dest: "{{ ansible_user_dir }}/.oh-my-zsh/custom/plugins/zsh-completions"
+    update: no
+
+- name: install tmux plugin manager
+  git:
+    repo: https://github.com/tmux-plugins/tpm
+    dest: "{{ ansible_user_dir }}/.tmux/plugins/tpm"
+    update: no
+
+- name: install default shell
+  user:
+    name: "{{ ansible_user_id }}"
+    shell: /bin/zsh
+  become: true
+
+- name: copy local zsh settings to remote
+  copy:
+    src: files/
+    dest: "{{ ansible_user_dir }}/"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    mode: '0640'
+    local_follow: yes
+    force: yes
+
+- name: create .localrc
+  file:
+    state: touch
+    path: "{{ ansible_user_dir}}/.localrc"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    mode: '0640'
+
+- name: set hostname variable in .localrc
+  lineinfile:
+    path: "{{ ansible_user_dir}}/.localrc"
+    regexp: '^HOSTNAME'
+    line: "export HOSTNAME={{ ansible_hostname }}"
+    state: present
+    

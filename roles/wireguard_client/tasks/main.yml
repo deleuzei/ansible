@@ -1,0 +1,10 @@
+---
+- name: configure client
+  include_tasks: client.yml
+
+- name: configure master 
+  include_tasks: master.yml
+
+# TODO
+# - name: confgure pre-shared keys
+#   include_tasks: psk.yml

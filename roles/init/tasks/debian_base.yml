@@ -1,0 +1,23 @@
+---
+# - name: Purge existing locales
+#   locale_gen:
+#     name: "*"
+#     state: absent
+
+- name: set us locale
+  locale_gen:
+    name: en_US.UTF-8
+    state: present
+  become: true 
+
+- name: update apt cache and upgrade system
+  apt: 
+    cache_valid_time: 3600
+    upgrade: dist
+  become: true
+
+- name: install default packages
+  apt:
+    name: "{{ packages }}"
+    state: latest
+  become: true

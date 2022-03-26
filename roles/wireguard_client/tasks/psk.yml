@@ -1,0 +1,6 @@
+---
+- name: generating pre-shared keys
+  shell:
+    "wg genpsk"
+  register: psk
+  

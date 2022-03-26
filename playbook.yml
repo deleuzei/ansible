@@ -1,0 +1,10 @@
+---
+- name: setup wireguard master
+  hosts: wireguard_master
+  roles:
+    - wireguard_master
+
+- name: setup wireguard clients
+  hosts: wireguard_client
+  roles:
+    - wireguard_client

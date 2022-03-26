@@ -1,0 +1,59 @@
+---
+- name: install wireguard package
+  apt:
+    cache_valid_time: 3600
+    name: wireguard
+    state: latest
+  become: true
+
+- name: Ensure wireguard configuration does not already exist.
+  stat:
+    path: /etc/wireguard/wg0.conf
+  register: wg
+  become: true
+
+- name: configure wireguard on node
+  block:
+    - name: ensure wireguard directory /etc/wireguard/keys exists 
+      file:
+        path: /etc/wireguard/keys
+        state: directory
+
+    - name: generate wireguard keys
+      shell:
+        cmd: 'wg genkey | tee /etc/wireguard/keys/local.privkey | wg pubkey | tee /etc/wireguard/keys/local.pubkey'
+
+    - name: register public key
+      command: 
+        cmd: 'cat /etc/wireguard/keys/local.pubkey'
+      register: node_pubkeyf
+  
+    - name: register public key
+      set_fact:
+          node_pubkey="{{ node_pubkeyf.stdout }}"
+
+    - name: register private key
+      command: 
+        cmd: 'cat /etc/wireguard/keys/local.privkey'
+      register: node_privkeyf
+
+    - name: register private key
+      set_fact:
+        node_privkey="{{ node_privkeyf.stdout }}"
+      
+    - name: create new wireguard interface
+      blockinfile:
+        path: '/etc/wireguard/wg0.conf'
+        marker: "#{mark} common configuration"
+        create: yes
+        block: |
+          [Interface]
+          Address = {{ internal_ip }}
+          PrivateKey = {{ node_privkey }}
+
+          [Peer]
+          PublicKey = {{ hostvars['master_node']['node_pubkey'] }} 
+          Endpoint = {{ hostvars['master_node']['ansible_host']  }}:{{ master_port }}
+          AllowedIPs = 192.168.3.0/24
+  become: true
+
