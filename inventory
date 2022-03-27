@@ -2,8 +2,8 @@
 master_node ansible_host=192.168.56.2 internal_ip=192.168.5.2
 
 [wireguard_client]
-client_node1 ansible_host=192.168.56.3 internal_ip=192.168.5.3
-client_node2 ansible_host=192.168.56.4 internal_ip=192.168.5.4
+client_node1 ansible_host=192.168.56.3 internal_ip=192.168.5.3 allowed_ips="192.168.3.0/24"
+client_node2 ansible_host=192.168.56.4 internal_ip=192.168.5.4 allowed_ips="192.168.3.0/24"
 
 [wireguard:children]
 wireguard_client

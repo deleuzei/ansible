@@ -1,76 +1,67 @@
 ---
-- name: install wireguard package
+- name: Install Wireguard package
   apt:
     cache_valid_time: 3600
     name: wireguard
     state: latest
-  become: true
 
-- name: Ensure wireguard configuration does not already exist.
-  stat:
-    path: /etc/wireguard/wg0.conf
-  register: wg
-  become: true
+- name: Ensure that Wireguard configuration directories exists 
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
+  loop:
+    - /etc/wireguard
+    - /etc/wireguard/keys
+    - /etc/wiregurad/peers
 
-- name: initial master setup
-  block:
-    - name: ensure wireguard directory /etc/wireguard/keys exists 
-      file:
-        path: /etc/wireguard/keys
-        state: directory
+- name: Generate Wireguard public and private keys
+  shell:
+    cmd: 'if ! test -f /etc/wireguard/keys/local.privkey; then wg genkey | tee /etc/wireguard/keys/local.privkey | wg pubkey | tee /etc/wireguard/keys/local.pubkey; fi'
+  notify:
+    register public key
+    register private key
+# TODO
+# Address in POSTROUTING table should not be hardcoded
+# Find a better way to manage IP tables
+# Say with ufw
+# While this isn't fixed, it is NECESSARY to ensure that the ip address 192.168.3.1/24
+# sudo ln -s /usr/bin/resolvectl /usr/local/bin/resolvconf
+# sudo ln -sf /lib/systemd/system/systemd-resolved.service /etc/systemd/system/dbus-org.freedesktop.resolve1.service
+- name: Create new Wireguard interface configuration
+  blockinfile:
+    path: '/etc/wireguard/wg0.conf'
+    marker: "{mark}"
+    marker_begin: "# ANSIBLE MANAGED BLOCK BEGIN"
+    marker_end: "# ANSIBLE MANAGED BLOCK END"
+    create: yes
+    block: |
+      [Interface]
+      Address = {{ internal_ip }}
+      ListenPort = {{ master_port }}
+      PrivateKey = {{ node_privkey }}
+      DNS = {{ main_dns }}
+      PostUp = ping -c1 8.8.8.8
 
-    - name: generate wireguard keys
-      shell:
-        cmd: 'wg genkey | tee /etc/wireguard/keys/local.privkey | wg pubkey | tee /etc/wireguard/keys/local.pubkey'
-      
-    - name: register private key
-      shell: 
-        cmd: 'cat /etc/wireguard/keys/local.privkey'
-      register: node_privkeyf
+      PostUp = iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+      PostUp = iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+      PostUp = iptables -A FORWARD -i wg0 -o wg0 -m conntrack --ctstate NEW -j ACCEPT
+      PostUp = iptables -t nat -A POSTROUTING -s 192.168.3.0/24 -o INTERFACE -j MASQUERADE
+      PostUp= wg addconf /etc/wireguad/peers/*
 
-    - set_fact:
-        node_privkey="{{ node_privkeyf.stdout }}"
+      PostDown = iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+      PostDown = iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+      PostDown = iptables -A FORWARD -i wg0 -o wg0 -m conntrack --ctstate NEW -j ACCEPT
+      PostDown = iptables -t nat -A POSTROUTING -s 192.168.3.0/24 -o INTERFACE -j MASQUERADE 
 
-    # - debug:
-    #     var: groups['dns'][0]['ansible_facts']
-
-    # TODO
-    # Address in POSTROUTING table should not be hardcoded
-    # Find a better way to manage IP tables
-    # Say with ufw
-    # While this isn't fixed, it is NECESSARY to ensure that the ip address 192.168.3.1/24
-    # sudo ln -s /usr/bin/resolvectl /usr/local/bin/resolvconf
-    # sudo ln -sf /lib/systemd/system/systemd-resolved.service /etc/systemd/system/dbus-org.freedesktop.resolve1.service
-
-    - name: create new wireguard interface
-      blockinfile:
-        path: '/etc/wireguard/wg0.conf'
-        marker: "\n#{mark} common configuration"
-        create: yes
-        block: |
-          [Interface]
-          Address = {{ internal_ip }}
-          ListenPort = {{ master_port }}
-          PrivateKey = {{ node_privkey }}
-          DNS = {{ main_dns }}
-          PostUp = ping -c1 8.8.8.8
-
-          PostUp = iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-          PostUp = iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-          PostUp = iptables -A FORWARD -i wg0 -o wg0 -m conntrack --ctstate NEW -j ACCEPT
-          PostUp = iptables -t nat -A POSTROUTING -s 192.168.3.0/24 -o INTERFACE -j MASQUERADE
-
-          PostDown = iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-          PostDown = iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-          PostDown = iptables -A FORWARD -i wg0 -o wg0 -m conntrack --ctstate NEW -j ACCEPT
-          PostDown = iptables -t nat -A POSTROUTING -s 192.168.3.0/24 -o INTERFACE -j MASQUERADE
-  when: not wg.stat.exists
-  become: true
-
-- name: register public key
-  shell: 
-    cmd: 'cat /etc/wireguard/keys/local.pubkey'
-  register: node_pubkeyf
-  become: true
-- set_fact:
-    node_pubkey="{{ node_pubkeyf.stdout }}"
+- name: Enable Wireguard systemd service
+  service:
+    name: wg-quick@wg0
+    enabled: yes
+    state: started
+    
+- name: Configure /etc/sysctl.conf 
+  import_tasks:
+    sysctl_conf.yml

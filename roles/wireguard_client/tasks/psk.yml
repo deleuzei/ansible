@@ -1,6 +1,21 @@
 ---
-- name: generating pre-shared keys
+- name: Generate pre-shared key
   shell:
-    "wg genpsk"
-  register: psk
-  
+    cmd: "wg genkey | tee /etc/wireguard/keys/local.psk"
+  notify:
+    register psk
+
+- name: Add the pre-shared key to local peer configuration
+  lineinfile:
+    path: '/etc/wireguard/peers/master.conf'
+    state: present
+    regxp: '^PreSharedKey'
+    line: '^PresharedKey = {{ psk }}'
+
+- name: Add the pre-shared key to remote peer configuration
+  lineinfile:
+    path: '/etc/wireguard/peers/{{ inventory_hostname_short }}.conf'
+    state: present
+    regxp: '^PreSharedKey'
+    line: '^PresharedKey = {{ psk }}'
+  delegate_to:  "{{ hostvars['master_node']['ansible_host'] }}"

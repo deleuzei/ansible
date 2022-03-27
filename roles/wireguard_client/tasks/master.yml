@@ -1,15 +1,14 @@
 ---
-- name: update master node peer section with new peer
+- name: Configure Wireguad master node with client node details
   blockinfile:
-    path: '/etc/wireguard/wg0.conf'
+    path: '/etc/wireguard/peers/{{ inventory_hostname_short }}.conf'
     marker: "{mark}"
-    marker_begin: "\n# ANSIBLE MANAGED BLOCK BEGIN #\n{{ inventory_hostname_short }}"
+    marker_begin: "# ANSIBLE MANAGED BLOCK BEGIN"
     marker_end: "# ANSIBLE MANAGED BLOCK END"
+    create: yes
     block: |
       [Peer]
       PublicKey = {{ node_pubkey }}
       AllowedIPs = {{ internal_ip }}
       PersistentKeepalive = 25
   delegate_to:  "{{ hostvars['master_node']['ansible_host'] }}"
-  remote_user: vagrant
-  become: true
