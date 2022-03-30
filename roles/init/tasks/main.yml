@@ -1,6 +1,7 @@
 ---
-- name: install default packages
-  include_tasks: "{{ ansible_os_family|lower }}_base.yml"
+- name: Perform initial system setup
+  include_tasks: "{{ ansible_os_family|lower }}.yml"
+  become: true
 
-- name: setup shell environment (user)
-  import_tasks: shell_environment.yml
+- name: Setup shell environment
+  include_tasks: shell_environment.yml
