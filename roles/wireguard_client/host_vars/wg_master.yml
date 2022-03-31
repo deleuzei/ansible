@@ -1,3 +1,0 @@
----
-ansible_user: "root"
-internal_ip: "192.168.3.1"

@@ -1,0 +1,5 @@
+---
+- name: Update remote systems
+  hosts: main
+  roles:
+    - update

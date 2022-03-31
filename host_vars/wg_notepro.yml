@@ -1,0 +1,4 @@
+---
+ansible_user: "u0_a69"
+ansible_port: "8022"
+internal_ip: "192.168.3.9"
