@@ -12,4 +12,4 @@
 - name: Configure preshared keys
   include_tasks: psk.yml
   become: true
-  notify: reset wireguard interfac
+  notify: reset wireguard interface

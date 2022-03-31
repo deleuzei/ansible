@@ -1,0 +1,21 @@
+[do] 
+do_kali     ansible_host=164.92.153.166
+wg_master   ansible_host=167.172.36.236
+wg_rpi4     ansible_host=192.168.3.4
+wg_mi11     ansible_host=192.168.3.7
+wg_notepro  ansible_host=192.168.3.9
+
+[wg_master]
+wg_master ansible_host=167.172.36.236
+
+[wg_client]
+wg_envy     ansible_host=192.168.3.2 
+wg_rpi4     ansible_host=192.168.3.4 
+wg_mi11     ansible_host=192.168.3.7  
+wg_notepro  ansible_host=192.168.3.9
+
+[wg:children]
+wg_client
+wg_master
+
+

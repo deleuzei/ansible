@@ -11,4 +11,4 @@
       PublicKey = {{ node_pubkey }}
       AllowedIPs = {{ internal_ip }}
       PersistentKeepalive = 25
-  delegate_to:  "{{ hostvars['master_node']['ansible_host'] }}"
+  delegate_to:  "{{ hostvars['wg_master']['ansible_host'] }}"

@@ -1,0 +1,14 @@
+---
+- hosts: all
+  tasks:
+  - name: Update remote servers
+    apt:
+      cache_valid_time: 3600
+      upgrade: dist
+    when: "ansible_pkg_mgr == 'apt'"
+    become: true
+
+  - name: Update remote systems using pkg package manager
+    shell:
+      cmd: 'pkg  upgrade -y'
+    when: "ansible_os_family == 'OtherLinux'"

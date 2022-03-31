@@ -46,8 +46,8 @@
     create: yes
     block: |
       [Peer]
-      PublicKey = {{ hostvars['master_node']['node_pubkey'] }}
-      Endpoint = {{ hostvars['master_node']['ansible_host']  }}:{{ master_port }}
+      PublicKey = {{ hostvars['wg_master']['node_pubkey'] }}
+      Endpoint = {{ hostvars['wg_master']['ansible_host']  }}:{{ master_port }}
       AllowedIPs = {{ allowed_ips }}
 
 - name: Enable Wireguard service
