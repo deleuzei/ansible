@@ -1,10 +1,6 @@
 ---
-- name: setup wireguard master
-  hosts: wg_master
+- name: Initialize host.
+  hosts: all
   roles:
-    - wg_master
-
-- name: setup wireguard clients
-  hosts: wg_client
-  roles:
-    - wg_client
+    - ssh_check
+    - init

@@ -1,7 +1,17 @@
 ---
-- name: Perform initial system setup
-  include_tasks: "{{ ansible_os_family|lower }}.yml"
+- block:
+    - name: Perform initial system setup.
+      include_tasks: "distro_{{ ansible_os_family|lower }}.yml"
+  rescue:
+    - name: Perform initial system setup for Kali Linux.  
+      when: '"Kali" is in ansible_os_family'
+      include_tasks: "{{ item }}"
+      loop:
+        - distro_debian.yml
+        - distro_kali.yml
   become: true
 
-- name: Setup shell environment
-  include_tasks: shell_environment.yml
+- block:
+  - name: Setup shell environment.
+    include_tasks: main_env.yml
+

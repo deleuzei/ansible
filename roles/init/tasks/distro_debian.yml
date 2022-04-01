@@ -4,17 +4,18 @@
 #     name: "*"
 #     state: absent
 
-- name: Set US locale
+- name: Set up locale.
   locale_gen:
     name: en_US.UTF-8
     state: present
 
-- name: Update package cache and upgrade system
+- name: Update package cache and upgrade system.
   apt: 
     cache_valid_time: 3600
     upgrade: dist
-
+  
 - name: Install basic system packages
   apt:
     name: "{{ packages }}"
     state: latest
+

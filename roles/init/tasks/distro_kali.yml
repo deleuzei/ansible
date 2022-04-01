@@ -1,0 +1,22 @@
+---
+- name: Install Kali Linux packages.
+  apt: 
+    name: "{{ packages_kali }}"
+  when: '"Kali" is in ansible_os_family'
+
+- name: Configure XRDP.
+  replace:
+    path: /etc/xrdp/xrdp.ini
+    regexp: 'port={{3389}}'
+    replace: "port={{ xrdp_port }}"
+
+- name: Enable XRDP systemd service.
+  service:
+    name: xrdp
+    state: started
+    enabled: yes
+
+- name: Display XRDP connection settings.
+  debug:
+    msg: |
+      {{ inventory_hostname }}:{{ xrdp_port }}

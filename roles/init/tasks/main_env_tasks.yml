@@ -1,0 +1,61 @@
+---
+- name: Install Oh-My-Zsh.
+  shell: 
+    cmd: sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --skip-chsh
+    creates: "{{ user_home }}/.oh-my-zsh"
+
+- name: Install Powerlevel10k.
+  git:
+    repo: "https://github.com/romkatv/powerlevel10k.git"
+    dest: "{{ user_home }}/.powerlevel10k"
+    update: no
+
+- name: Install Zsh Syntax Highlighting.
+  git:
+    repo: "https://github.com/zsh-users/zsh-syntax-highlighting.git"
+    dest: "{{ user_home }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+    update: no
+
+- name: Install Zsh Completions 
+  git:
+    repo: "https://github.com/zsh-users/zsh-completions"
+    dest: "{{ user_home_dir }}/.oh-my-zsh/custom/plugins/zsh-completions"
+    update: no
+
+- name: Set Zsh as default shell
+  user:
+    name: "{{ user_id }}"
+    shell: /bin/zsh
+  become_user: root
+  become: true
+
+- name: Install tmux plugin manager
+  git:
+    repo: https://github.com/tmux-plugins/tpm
+    dest: "{{ user_home_dir }}/.tmux/plugins/tpm"
+    update: no
+
+- name: Update remote environment settings
+  copy:
+    src: files/
+    dest: "{{ user_home_dir }}/"
+    owner: "{{ user_id }}"
+    group: "{{ user_id }}"
+    mode: '0640'
+    local_follow: yes
+    force: yes
+
+- name: Create .localrc
+  file:
+    state: touch
+    path: "{{ user_home_dir}}/.localrc"
+    owner: "{{ user_id }}"
+    group: "{{ user_id }}"
+    mode: '0740'
+
+- name: Set hostname variable in .localrc
+  lineinfile:
+    path: "{{ user_home_dir}}/.localrc"
+    regexp: '^HOSTNAME'
+    line: "export HOSTNAME={{ ansible_hostname }}"
+    state: present

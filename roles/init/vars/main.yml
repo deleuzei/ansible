@@ -12,4 +12,11 @@ packages:
     - git
     - htop
     - speedtest-cli
+    - iperf
+packages_kali:
+    #- kali-linux-large
+    #- kali-desktop-xfce
+    - xorg
+    - xrdp
+xrdp_port: "3390"
 ansible_python_interpreter: "/usr/bin/python3"

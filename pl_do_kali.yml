@@ -1,0 +1,14 @@
+---
+- name: Deploy Kali Linux on Digital Ocean.
+  hosts: localhost
+  connection: local
+  gather_facts: False
+  roles:
+    - ssh_check
+    - do_kali
+
+- name: Initialize Kali Linux.
+  hosts: do
+  remote_user: root
+  roles:
+    - init

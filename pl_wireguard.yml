@@ -1,10 +1,10 @@
 ---
-- name: setup wireguard master
+- name: Setup Wireguard master node.
   hosts: wg_master
   roles:
     - wireguard_master
 
-- name: setup wireguard clients
+- name: Setup Wireguard client nodes.
   hosts: wg_client
   roles:
     - wireguard_client
