@@ -1,0 +1,38 @@
+- name: Check if ssh login is enabled for default user.
+  stat:
+    path: "/home/{{ default_user }}/.ssh/authorized_keys"
+  register: check
+
+- name: Create .ssh folder for default user.
+  file:
+    path: "/home/{{ default_user }}/.ssh"
+    state: directory
+    mode: "0700"
+    owner: "{{ default_user }}"
+    group: "{{ default_user }}"
+    when: not check.stat.exists
+    
+- name: Enable ssh login for default user.
+  copy:
+    remote_src: yes
+    src: "/root/.ssh/authorized_keys"
+    dest:  "/home/{{ default_user }}/.ssh/authorized_keys"
+    mode: "0600"
+    owner: "{{ default_user }}"
+    group: "{{ default_user }}"
+  when: not check.stat.exists
+  become: true
+
+- name: Harden sshd.
+  lineinfile:
+    path: "/etc/ssh/sshd_config"
+    regex: '^.*{{ item.key }}'
+    line: "{{ item.key }} {{ item.value}}"
+  loop: "{{ ssh_settings | dict2items }}"
+  become: true
+
+- name: Restart sshd.
+  service:
+    name: sshd
+    state: reloaded
+  become: true

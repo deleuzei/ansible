@@ -1,0 +1,11 @@
+---
+- name: Destroy Kali Linux host on Digital Ocean.
+  hosts: localhost
+  connection: local
+  gather_facts: False
+  tasks:
+    - name: Destroy Digital Ocean Kali Linux host.
+      digital_ocean_droplet:
+        state: absent
+        name: kali-test
+        unique_name: yes

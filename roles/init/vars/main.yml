@@ -13,6 +13,8 @@ packages:
     - htop
     - speedtest-cli
     - iperf
+    - ufw
+    - gufw
 packages_kali:
     #- kali-linux-large
     #- kali-desktop-xfce
@@ -20,3 +22,32 @@ packages_kali:
     - xrdp
 xrdp_port: "3390"
 ansible_python_interpreter: "/usr/bin/python3"
+ssh_settings:
+    - PermitRootLogin:
+        key: "PermitRootLogin"
+        value: "no"
+    - AllowUsers:
+        key: "AllowUsers"
+        value: "{{ default.user }}"
+    - MaxAuthTries:
+        key: "MaxAuthTries"
+        value: "5"
+    - Port:
+        key: "#Port"
+        value: "8022"
+allowed_incoming_ports:
+    - 23
+    - 53
+    - 80
+    - 123
+    - 143
+    - 161
+    - 443
+allowed_outgoing_ports:
+    - 23
+    - 53
+    - 80
+    - 123
+    - 143
+    - 161
+    - 443

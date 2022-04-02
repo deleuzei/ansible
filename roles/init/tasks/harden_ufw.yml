@@ -1,0 +1,29 @@
+---
+- name: Enable ufw logging
+  ufw:
+    logging: 'on'  
+
+- name: Open ssh port.
+  ufw:
+    rule: allow
+    to_port: "{{ ssh_settings['Port'].value }}"
+
+- name: Open incoming ports.
+  ufw:
+    rule: allow
+    to_port: "{{ item }}"
+  loop:
+    - allowed_incoming_ports
+
+- name: Open outgoing ports
+  ufw:
+    rule: allow
+    to_port: "{{ item }}"
+  loop:
+    - allowed_outgoing_ports
+
+- name: Enable ufw.
+  ufw:
+    state: enabled
+    policy: deny
+    proto: any

@@ -1,6 +1,10 @@
 ---
+- name: Check that SSH agent is running on localhost.
+  hosts: localhost
+  roles:
+    - ssh_check
+
 - name: Initialize host.
   hosts: all
   roles:
-    - ssh_check
     - init

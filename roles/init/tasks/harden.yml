@@ -1,0 +1,5 @@
+- name: Harden ssh daemon.
+  include_tasks: harden_sshd.yml
+
+- name: Enable ufw firewall.
+  include_tasks: harden_ufw.yml

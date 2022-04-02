@@ -1,14 +1,14 @@
 ---
-- name: Remove existing Droplet.
-  digital_ocean_droplet:
-    state: absent
-    name: kali-test
-    unique_name: yes
+# - name: Remove existing Droplet.
+#   digital_ocean_droplet:
+#     state: absent
+#     name: kali-test
+#     unique_name: yes
 
 
-- name: Wait for the Droplet to be removed
-  pause:
-    seconds: 10
+# - name: Wait for the Droplet to be removed
+#   pause:
+#     seconds: 10
 
 - name: Create new Droplet.
   digital_ocean_droplet:
@@ -35,8 +35,9 @@
 
 - name: Wait for host to become reachable.
   wait_for_connection:
+    delay: 10
 
 # Necessary else further roles will not work
-- name: Wait for the host to become reachable.
-  pause:
-    seconds: 10
+# - name: Wait for the host to become reachable.
+#   pause:
+#     seconds: 10
