@@ -7,4 +7,4 @@
 - name: Initialize host.
   hosts: all
   roles:
-    - init
+    - setup/init
