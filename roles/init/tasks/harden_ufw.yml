@@ -6,24 +6,20 @@
 - name: Open ssh port.
   ufw:
     rule: allow
-    to_port: "{{ ssh_settings['Port'].value }}"
+    to_port: "{{ ssh_settings['Port']['value'] }}"
 
 - name: Open incoming ports.
   ufw:
     rule: allow
-    to_port: "{{ item }}"
-  loop:
-    - allowed_incoming_ports
+    to_port: "{{ item | int }}"
+  loop: "{{ allowed_incoming_ports }}"
 
 - name: Open outgoing ports
   ufw:
     rule: allow
-    to_port: "{{ item }}"
-  loop:
-    - allowed_outgoing_ports
+    from_port: "{{ item | int }}"
+  loop: "{{ allowed_outgoing_ports }}"
 
 - name: Enable ufw.
   ufw:
     state: enabled
-    policy: deny
-    proto: any

@@ -7,7 +7,7 @@
 - name: Configure XRDP.
   replace:
     path: /etc/xrdp/xrdp.ini
-    regexp: 'port={{3389}}'
+    regexp: '^.*port='
     replace: "port={{ xrdp_port }}"
 
 - name: Enable XRDP systemd service.

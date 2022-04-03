@@ -1,4 +1,5 @@
 ---
+default_user: "user"
 packages:
     - net-tools 
     - tree 
@@ -23,17 +24,17 @@ packages_kali:
 xrdp_port: "3390"
 ansible_python_interpreter: "/usr/bin/python3"
 ssh_settings:
-    - PermitRootLogin:
-        key: "PermitRootLogin"
-        value: "no"
-    - AllowUsers:
-        key: "AllowUsers"
-        value: "{{ default.user }}"
-    - MaxAuthTries:
+    # PermitRootLogin:
+    #     key: "PermitRootLogin"
+    #     value: "no"
+    # AllowUsers:
+    #     key: "AllowUsers"
+    #     value: "{{ default_user }}"
+    MaxAuthTries:
         key: "MaxAuthTries"
         value: "5"
-    - Port:
-        key: "#Port"
+    Port:
+        key: "Port"
         value: "8022"
 allowed_incoming_ports:
     - 23
@@ -43,6 +44,8 @@ allowed_incoming_ports:
     - 143
     - 161
     - 443
+#    - "{{ ssh_setings['port']['value'] }}"
+    - "{{ xrdp_port }}"
 allowed_outgoing_ports:
     - 23
     - 53

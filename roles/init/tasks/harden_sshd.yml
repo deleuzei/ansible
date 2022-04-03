@@ -10,7 +10,7 @@
     mode: "0700"
     owner: "{{ default_user }}"
     group: "{{ default_user }}"
-    when: not check.stat.exists
+  when: not check.stat.exists
     
 - name: Enable ssh login for default user.
   copy:
@@ -27,7 +27,7 @@
   lineinfile:
     path: "/etc/ssh/sshd_config"
     regex: '^.*{{ item.key }}'
-    line: "{{ item.key }} {{ item.value}}"
+    line: "{{ item.key }} {{ item.value.value }}"
   loop: "{{ ssh_settings | dict2items }}"
   become: true
 

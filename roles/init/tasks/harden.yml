@@ -1,5 +1,12 @@
-- name: Harden ssh daemon.
+- name: Harden sshd.
   include_tasks: harden_sshd.yml
 
 - name: Enable ufw firewall.
   include_tasks: harden_ufw.yml
+
+- name: Disable IPv6.
+  lineinfile:
+    path: /etc/sysctl.conf
+    regexp: '^net.ipv6.conf.all.disable_ipv6'
+    line: 'net.ipv6.conf.all.disable_ipv6 = 1'
+  become: true

@@ -13,7 +13,7 @@
 - name: Create new Droplet.
   digital_ocean_droplet:
     state: present
-    name: kali-test
+    name: "{{ hostname }}"
     unique_name: yes
     private_networking: yes
     size: c-4
@@ -32,6 +32,14 @@
     ansible_ssh_extra_args: '-o StrictHostKeyChecking=no'
   when: do.data is defined
   changed_when: False
+
+- name: Add newly deployed host to /etc/hosts.
+  lineinfile:
+    state: present
+    path: /etc/hosts
+    regex: "^.*{{ hostname }}"
+    line: "{{ do.data.ip_address }} {{ hostname }}"
+  become: true
 
 - name: Wait for host to become reachable.
   wait_for_connection:
