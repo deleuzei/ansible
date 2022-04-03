@@ -16,18 +16,21 @@
     name: "{{ hostname }}"
     unique_name: yes
     private_networking: yes
-    size: c-4
+    size: c-2
     image_id: "104051903"
     region: ams3
     # Customize this for your account.
     ssh_keys:
       - d2:50:66:64:37:12:d1:4f:59:0e:27:c8:e0:08:68:f9
+    monitoring: yes
+
   register: do
 
 - name: Add new host to inventory.
   add_host:
     host: "{{ do.data.ip_address }}"
-    groups: do
+    ansible_host: "{{ hostname }}"
+    groups: digitalocean
     ansible_user: root
     ansible_ssh_extra_args: '-o StrictHostKeyChecking=no'
   when: do.data is defined
