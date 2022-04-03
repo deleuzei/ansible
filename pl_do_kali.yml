@@ -4,8 +4,8 @@
   connection: local
   gather_facts: False
   roles:
-    - ssh_check
-    - do_kali
+    - ssh-check
+    - digitalocean/kali
 
 - name: Initialize Kali Linux.
   hosts: do

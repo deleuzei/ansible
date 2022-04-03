@@ -1,0 +1,9 @@
+---
+- name: Gather facts about keys currently attached to local ssh agent.
+  shell: 
+    cmd: 'ssh-add -L'
+  register: ssh_check
+
+- name: End playbook execution because ssh agent does not contain any keys. 
+  meta: "end_play"
+  when: '"ssh" not in ssh_check.stdout'

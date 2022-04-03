@@ -1,9 +1,0 @@
----
-- name: Register ssh-add output.
-  shell: 
-    cmd: 'ssh-add -L'
-  register: ssh_check
-
-- name: End playbook execution because ssh-agent is not running. 
-  meta: "end_play"
-  when: '"ssh" not in ssh_check.stdout'
