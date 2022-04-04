@@ -1,0 +1,16 @@
+VAGRANTFILE_API_VERSION = "2"
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+    config.vm.box = "{{ vm_box }}"
+    config.ssh.insert_key = {{ ssh_insert_key }}
+    config.vm.synced_folder ".", "/vagrant", disabled: true
+
+    config.vm.provider :virtualbox do |virtualbox|
+      virtualbox.gui = {{ virtualbox_gui }}
+      virtualbox.memory = {{ virtualbox_memory }}
+    end
+
+    config.vm.define "{{ hostname }}" do |host|
+      host.vm.hostname = "{{ hostname }}"
+      host.vm.network  :private_network, ip: "{{ ipv4_address }}"
+    end
+end

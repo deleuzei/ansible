@@ -1,5 +1,5 @@
 ---
-- name: Install Kali Linux packages.
+- name: Install basic Kali Linux packages.
   apt: 
     name: "{{ packages_kali }}"
   when: '"Kali" is in ansible_os_family'

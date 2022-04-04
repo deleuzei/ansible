@@ -33,7 +33,7 @@
     groups: digitalocean
     ansible_user: root
     ansible_ssh_extra_args: '-o StrictHostKeyChecking=no'
-  when: do.data is defined
+  when: digitalocean.data is defined
   changed_when: False
 
 - name: Add newly deployed host to /etc/hosts.

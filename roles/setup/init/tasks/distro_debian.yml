@@ -9,6 +9,17 @@
     name: en_US.UTF-8
     state: present
 
+# Debugging hash mismatch
+# - name: Debugging hash mismatch
+#   file:
+#     dest: /etc/gcrypt
+#     state: directory
+    
+# - name: Debugging hash mismatch
+#   file:
+#     dest: /etc/gcrypt/hwf.deny
+#     state: touch
+    
 - name: Update package cache and upgrade system.
   apt: 
     cache_valid_time: 3600
@@ -16,6 +27,6 @@
   
 - name: Install basic system packages
   apt:
-    name: "{{ packages }}"
+    name: "{{ packages_debian }}"
     state: latest
 

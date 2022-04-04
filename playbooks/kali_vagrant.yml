@@ -1,0 +1,13 @@
+---
+- name: Deploy on the local machine using Vagrant.
+  hosts: localhost
+  connection: local
+  gather_facts: False
+  roles:
+    - deployment/vagrant/kali
+
+- name: Initalize host.
+  hosts: vagrant
+  roles:
+    - setup/ssh_check_remote
+    - setup/init

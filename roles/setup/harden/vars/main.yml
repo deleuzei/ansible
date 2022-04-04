@@ -1,0 +1,32 @@
+---
+ssh_settings:
+    # PermitRootLogin:
+    #     key: "PermitRootLogin"
+    #     value: "no"
+    # AllowUsers:
+    #     key: "AllowUsers"
+    #     value: "{{ default_user }}"
+    MaxAuthTries:
+        key: "MaxAuthTries"
+        value: "5"
+    Port:
+        key: "Port"
+        value: "8022"
+allowed_incoming_ports:
+    - 23
+    - 53
+    - 80
+    - 123
+    - 143
+    - 161
+    - 443
+#    - "{{ ssh_setings['port']['value'] }}"
+    - "{{ xrdp_port }}"
+allowed_outgoing_ports:
+    - 23
+    - 53
+    - 80
+    - 123
+    - 143
+    - 161
+    - 443

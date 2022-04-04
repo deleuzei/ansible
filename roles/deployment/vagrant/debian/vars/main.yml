@@ -1,0 +1,8 @@
+---
+hostname: "vagrant-debian"
+vm_box: "debian/bullseye64"
+
+ssh_insert_key: "true"
+virtualbox_gui: "false"
+virtualbox_memory: 1024
+ipv4_address: "192.168.56.2"
