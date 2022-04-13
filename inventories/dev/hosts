@@ -2,8 +2,8 @@
 wg_master ansible_host=192.168.56.2 internal_ip=192.168.5.2
 
 [wg_client]
-client_node1 ansible_host=192.168.56.3 internal_ip=192.168.5.3 
-client_node2 ansible_host=192.168.56.4 internal_ip=192.168.5.4 
+client_node1 ansible_host=192.168.56.3 internal_ip=192.168.5.3
+client_node2 ansible_host=192.168.56.4 internal_ip=192.168.5.4
 
 [wg_clients:vars]
 allowed_ips="192.168.3.0/24"
@@ -17,5 +17,3 @@ master_port=51820
 ansible_user=vagrant
 ansible_ssh_private_key_file=/home/dionysos/.vagrant.d/insecure_private_key
 main_dns=1.1.1.1
-
-
