@@ -1,0 +1,17 @@
+---
+- name: Deploy on local machine using Vagrant.
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  roles:
+    - deployment/vagrant/docker
+
+- name: Initalize host.
+  hosts: vagrant
+  roles:
+    - setup/docker
+
+- name: Deploy Flask on host.
+  hosts: vagrant
+  roles:
+    - configuration/flask

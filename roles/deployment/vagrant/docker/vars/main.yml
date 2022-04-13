@@ -1,7 +1,6 @@
 ---
-hostname: "vagrant-debian"
+hostname: "vagrant-docker"
 vm_box: "debian/bullseye64"
-vagrantfile_src: "templates/Vagrantfile.j2"
 ssh_insert_key: "true"
 provider_gui: "false"
 provider_memory: 1024

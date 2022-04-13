@@ -2,7 +2,7 @@
 - block:
     - name: Create Vagrantfile from template.
       template:
-        src: "{{ role_path }}/{{ vagrantfile_src }}"
+        src: "templates/Vagrantfile.j2"
         dest: "{{ role_path }}/files/Vagrantfile"
 
     - name: Bring Vagrant host up.
@@ -16,7 +16,7 @@
         groups: vagrant
         ansible_user: vagrant
         ansible_ssh_private_key_file: "{{ role_path }}/files/.vagrant/machines/{{ hostname }}/virtualbox/private_key"
-        ansible_ssh_extra_args: "-o StrictHostKeyChecking=no"
+        ansible_ssh_extra_args: "-o StrictHostKeyChecking=no -o UpdateHostkeys=yes"
 
   # - name: Add newly deployed host to /etc/hosts.
   #   lineinfile:
@@ -25,6 +25,11 @@
   #     regex: "^.*{{ hostname }}"
   #     line: "{{ ipv4_address }} {{ hostname }}"
   #   become: true
+
+    - name: Attempt an ssh connection to the host.
+      command: whoami
+      delegate_to: "{{ ipv4_address }}"
+      timeout: 10
 
   rescue:
     - name: Destroy Vagrant host.

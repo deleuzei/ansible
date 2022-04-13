@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   role_name: init
-  namespace: hierophant
+  #namespace: hierophant
   description: etc
   license: etc
   min_ansible_version: "2.9"

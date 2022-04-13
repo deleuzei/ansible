@@ -1,0 +1,15 @@
+---
+- name: Install Pip
+  apt:
+    name: python3-pip
+    state: present
+
+- name: Install Docker Python Library
+  pip:
+    name: docker
+    state: present
+
+- name: Build Docker images from Dockerfiles.
+  docker_image:
+    name: "{{ item.name }}"
+    tag: "{{ item.tag }}"

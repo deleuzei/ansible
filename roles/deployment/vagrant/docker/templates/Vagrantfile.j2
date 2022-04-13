@@ -1,0 +1,24 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+    config.vm.box = "{{ vm_box }}"
+    config.ssh.insert_key = {{ ssh_insert_key }}
+    config.vm.synced_folder ".", "/vagrant", disabled: true
+    
+    config.vm.define "{{ hostname }}" do |host_config|
+      host_config.vm.hostname = "{{ hostname }}"
+      host_config.vm.network  :private_network, ip: "{{ ipv4_address }}"
+    end
+  
+  config.vm.provider :virtualbox do |provider|
+    provider.gui = {{ provider_gui }}
+    provider.memory = {{ provider_memory }}
+    provider.cpus = {{ provider_cpus }}
+
+    provider.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    provider.customize ["modifyvm", :id, "--ioapic", "on"]
+  end
+end

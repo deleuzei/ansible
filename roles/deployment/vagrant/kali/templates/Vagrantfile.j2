@@ -5,8 +5,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.synced_folder ".", "/vagrant", disabled: true
 
     config.vm.provider :virtualbox do |virtualbox|
-      virtualbox.gui = {{ virtualbox_gui }}
-      virtualbox.memory = {{ virtualbox_memory }}
+      virtualbox.gui = {{ provider_gui }}
+      virtualbox.memory = {{ provider_memory }}
     end
 
     config.vm.define "{{ hostname }}" do |host|
