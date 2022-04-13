@@ -5,7 +5,7 @@
     name: wireguard
     state: latest
 
-- name: Ensure that Wireguard configuration directories exists 
+- name: Ensure that Wireguard configuration directories exists
   file:
     path: "{{ item }}"
     state: directory
@@ -19,14 +19,13 @@
 
 - name: Generate Wireguard public and private keys
   shell:
-    cmd: 'if ! test -f /etc/wireguard/keys/local.privkey; then wg genkey | tee /etc/wireguard/keys/local.privkey | wg pubkey | tee /etc/wireguard/keys/local.pubkey; fi'
-  notify:
-    register public key
+    cmd: "if ! test -f /etc/wireguard/keys/local.privkey; then wg genkey | tee /etc/wireguard/keys/local.privkey | wg pubkey | tee /etc/wireguard/keys/local.pubkey; fi"
+  notify: register public key
     register private key
 
 - name: Create or update Wireguard interface configuration
   blockinfile:
-    path: '/etc/wireguard/wg0.conf'
+    path: "/etc/wireguard/wg0.conf"
     marker: "{mark}"
     marker_begin: "# ANSIBLE MANAGED BLOCK BEGIN"
     marker_end: "# ANSIBLE MANAGED BLOCK END"
@@ -39,7 +38,7 @@
 
 - name: Create or update Wireguard master peer configuration
   blockinfile:
-    path: '/etc/wireguard/peers/master.conf'
+    path: "/etc/wireguard/peers/master.conf"
     marker: "{mark}"
     marker_begin: "# ANSIBLE MANAGED BLOCK BEGIN"
     marker_end: "# ANSIBLE MANAGED BLOCK END"

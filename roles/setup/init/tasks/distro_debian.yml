@@ -14,17 +14,17 @@
 #   file:
 #     dest: /etc/gcrypt
 #     state: directory
-    
+
 # - name: Debugging hash mismatch
 #   file:
 #     dest: /etc/gcrypt/hwf.deny
 #     state: touch
-    
+
 - name: Update package cache and upgrade system.
-  apt: 
+  apt:
     cache_valid_time: 3600
     upgrade: dist
-  
+
 - name: Install basic system packages
   apt:
     name: "{{ packages_debian }}"

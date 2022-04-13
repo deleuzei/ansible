@@ -2,7 +2,7 @@
 - name: Deploy Kali Linux on Digital Ocean.
   hosts: localhost
   connection: local
-  gather_facts: False
+  gather_facts: false
   roles:
     - setup/ssh_check_local
     - deployment/digitalocean/kali

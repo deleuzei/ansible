@@ -5,7 +5,7 @@
     name: wireguard
     state: latest
 
-- name: Ensure that Wireguard configuration directories exists 
+- name: Ensure that Wireguard configuration directories exists
   file:
     path: "{{ item }}"
     state: directory
@@ -19,9 +19,8 @@
 
 - name: Generate Wireguard public and private keys
   shell:
-    cmd: 'if ! test -f /etc/wireguard/keys/local.privkey; then wg genkey | tee /etc/wireguard/keys/local.privkey | wg pubkey | tee /etc/wireguard/keys/local.pubkey; fi'
-  notify:
-    register public key
+    cmd: "if ! test -f /etc/wireguard/keys/local.privkey; then wg genkey | tee /etc/wireguard/keys/local.privkey | wg pubkey | tee /etc/wireguard/keys/local.pubkey; fi"
+  notify: register public key
     register private key
 # TODO
 # Address in POSTROUTING table should not be hardcoded
@@ -32,7 +31,7 @@
 # sudo ln -sf /lib/systemd/system/systemd-resolved.service /etc/systemd/system/dbus-org.freedesktop.resolve1.service
 - name: Create new Wireguard interface configuration
   blockinfile:
-    path: '/etc/wireguard/wg0.conf'
+    path: "/etc/wireguard/wg0.conf"
     marker: "{mark}"
     marker_begin: "# ANSIBLE MANAGED BLOCK BEGIN"
     marker_end: "# ANSIBLE MANAGED BLOCK END"
@@ -54,14 +53,13 @@
       PostDown = iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
       PostDown = iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
       PostDown = iptables -A FORWARD -i wg0 -o wg0 -m conntrack --ctstate NEW -j ACCEPT
-      PostDown = iptables -t nat -A POSTROUTING -s 192.168.3.0/24 -o INTERFACE -j MASQUERADE 
+      PostDown = iptables -t nat -A POSTROUTING -s 192.168.3.0/24 -o INTERFACE -j MASQUERADE
 
 - name: Enable Wireguard systemd service
   service:
     name: wg-quick@wg0
     enabled: yes
     state: started
-    
-- name: Configure /etc/sysctl.conf 
-  import_tasks:
-    sysctl_conf.yml
+
+- name: Configure /etc/sysctl.conf
+  import_tasks: sysctl_conf.yml

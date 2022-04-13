@@ -1,6 +1,6 @@
 ---
 - name: Install Oh-My-Zsh.
-  shell: 
+  shell:
     cmd: sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --skip-chsh
     creates: "{{ user_home_dir }}/.oh-my-zsh"
 
@@ -16,7 +16,7 @@
     dest: "{{ user_home_dir }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
     update: no
 
-- name: Install Zsh Completions 
+- name: Install Zsh Completions
   git:
     repo: "https://github.com/zsh-users/zsh-completions"
     dest: "{{ user_home_dir }}/.oh-my-zsh/custom/plugins/zsh-completions"
@@ -41,7 +41,7 @@
     dest: "{{ user_home_dir }}/"
     owner: "{{ user_id }}"
     group: "{{ user_id }}"
-    mode: '0640'
+    mode: "0640"
     local_follow: yes
     force: yes
 
@@ -51,11 +51,11 @@
     path: "{{ user_home_dir}}/.localrc"
     owner: "{{ user_id }}"
     group: "{{ user_id }}"
-    mode: '0740'
+    mode: "0740"
 
 - name: Set hostname variable in .localrc
   lineinfile:
     path: "{{ user_home_dir}}/.localrc"
-    regexp: '^HOSTNAME'
+    regexp: "^HOSTNAME"
     line: "export HOSTNAME={{ ansible_hostname }}"
     state: present

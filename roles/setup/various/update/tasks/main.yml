@@ -8,5 +8,5 @@
 
 - name: Update remote systems using pkg package manager
   shell:
-    cmd: 'pkg upgrade -y'
+    cmd: "pkg upgrade -y"
   when: "ansible_os_family == 'OtherLinux'"

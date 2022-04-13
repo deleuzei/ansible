@@ -2,4 +2,4 @@
 ansible_user: "pi"
 ansible_python_interpreter: "usr/bin/python3"
 internal_ip: "192.168.3.4"
-allowed_ips: "192.168.3.0/24" 
+allowed_ips: "192.168.3.0/24"

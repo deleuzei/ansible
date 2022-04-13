@@ -1,7 +1,7 @@
 ---
 - name: Enable ufw logging
   ufw:
-    logging: 'on'  
+    logging: "on"
 
 - name: Open ssh port.
   ufw:

@@ -1,7 +1,7 @@
 ---
 - name: Configure Wireguad master node with client node details
   blockinfile:
-    path: '/etc/wireguard/peers/{{ inventory_hostname_short }}.conf'
+    path: "/etc/wireguard/peers/{{ inventory_hostname_short }}.conf"
     marker: "{mark}"
     marker_begin: "# ANSIBLE MANAGED BLOCK BEGIN"
     marker_end: "# ANSIBLE MANAGED BLOCK END"
@@ -11,4 +11,4 @@
       PublicKey = {{ node_pubkey }}
       AllowedIPs = {{ internal_ip }}
       PersistentKeepalive = 25
-  delegate_to:  "{{ hostvars['wg_master']['ansible_host'] }}"
+  delegate_to: "{{ hostvars['wg_master']['ansible_host'] }}"

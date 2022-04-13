@@ -5,7 +5,6 @@
 #     name: kali-test
 #     unique_name: yes
 
-
 # - name: Wait for the Droplet to be removed
 #   pause:
 #     seconds: 10
@@ -32,9 +31,9 @@
     ansible_host: "{{ hostname }}"
     groups: digitalocean
     ansible_user: root
-    ansible_ssh_extra_args: '-o StrictHostKeyChecking=no'
+    ansible_ssh_extra_args: "-o StrictHostKeyChecking=no"
   when: digitalocean.data is defined
-  changed_when: False
+  changed_when: false
 
 - name: Add newly deployed host to /etc/hosts.
   lineinfile:
@@ -47,7 +46,6 @@
 - name: Wait for host to become reachable.
   wait_for_connection:
     delay: 10
-
 # Necessary else further roles will not work
 # - name: Wait for the host to become reachable.
 #   pause:
