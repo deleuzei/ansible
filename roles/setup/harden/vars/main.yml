@@ -20,7 +20,7 @@ allowed_incoming_ports:
     - 143
     - 161
     - 443
-#    - "{{ ssh_setings['port']['value'] }}"
+    - "{{ ssh_setings['port']['value'] }}"
     - "{{ xrdp_port }}"
 allowed_outgoing_ports:
     - 23

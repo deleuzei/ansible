@@ -23,7 +23,7 @@
   when: not check.stat.exists
   become: true
 
-- name: Harden sshd.
+- name: Harden sshd via configuration file.
   lineinfile:
     path: "/etc/ssh/sshd_config"
     regex: '^.*{{ item.key }}'
@@ -36,3 +36,12 @@
     name: sshd
     state: reloaded
   become: true
+
+- name: Set ansible port fact.
+  set_fact: 
+    ansible_port: "{[ hostvars['inventory_hostname']['ssh_settings']['Port']['value'].value }}"
+    cachable: yes
+
+- name: Debug ansible port.
+  msg: "{{ hostvars['inventory_hostname'].ansible_port }}"
+  tag: debug

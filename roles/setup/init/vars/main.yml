@@ -2,9 +2,8 @@
 ansible_python_interpreter: "/usr/bin/python3"
 default_user: "user"
 
-packages_debian: [ acl, net-tools, tree, git, rsync, zsh, tmux, vim, curl, wget, git, htop, speedtest-cli, iperf, ufw, gufw ]
+packages_debian: [ unattended-upgrades, acl, net-tools, tree, git, rsync, zsh, tmux, vim, curl, wget, git, htop, speedtest-cli, iperf, ufw, gufw ]
 
-packages_kali: [ kali-desktop-xfce, xorg, xrdp ]
-    # kali-linux-large
-
+packages_kali: [ kali-linux-large, kali-desktop-xfce, xorg, xrdp ]
+ 
 xrdp_port: "3390"
