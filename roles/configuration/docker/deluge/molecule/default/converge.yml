@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include deluge"
+      include_role:
+        name: "deluge"

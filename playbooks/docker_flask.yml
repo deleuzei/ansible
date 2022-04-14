@@ -6,12 +6,13 @@
   roles:
     - deployment/vagrant/docker
 
-- name: Initalize host.
+- name: Install and setup Docker.
   hosts: vagrant
+  become: true
   roles:
     - setup/docker
 
-- name: Deploy Flask on host.
+- name: Deploy Docker Flask application on host.
   hosts: vagrant
   roles:
     - configuration/flask

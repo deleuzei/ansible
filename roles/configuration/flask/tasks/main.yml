@@ -1,4 +1,19 @@
 ---
+- block:
+  - name: Add vagrant user to docker group.
+    user:
+      name: vagrant
+      groups: docker
+      append: true
+      
+
+  - name: Install Pip.
+    apt: name=python3-pip state=present
+
+  - name: Install Docker Python library.
+    pip: name=docker state=present
+  become: true
+  
 - name: Copy docker images to host.
   copy:
     src: "files/{{ item }}"
@@ -6,7 +21,7 @@
   with_items:
     - data
     - db
-    - flask
+    - www
 
 - name: Build Docker images from Dockerfiles.
   docker_image:

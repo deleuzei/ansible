@@ -36,6 +36,7 @@
       Address = {{ internal_ip }}
       PrivateKey = {{ node_privkey }}
       PostUp= wg addconf /etc/wireguad/peers/*
+      DNS = "{{ main_dns }}"
 
 - name: Create or update Wireguard master peer configuration
   blockinfile:
