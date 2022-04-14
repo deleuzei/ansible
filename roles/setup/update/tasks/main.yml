@@ -3,6 +3,7 @@
   apt:
     cache_valid_time: 3600
     upgrade: dist
+    update_cache: yes
   when: "ansible_pkg_mgr == 'apt'"
   become: true
 
