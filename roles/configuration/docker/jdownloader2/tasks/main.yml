@@ -1,2 +1,12 @@
 ---
-# tasks file for jdownloader2
+- name: Copying necessary files to host.
+
+- name: Setting up Docker container file.
+
+- name: Starting container via docker compose.
+
+- name: Waiting for container to become acessible.
+
+- name: Enabling SSH access to container.
+
+- name: Gathering facts.

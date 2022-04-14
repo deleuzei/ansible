@@ -1,2 +1,16 @@
 ---
-# tasks file for deluge
+- name: Copying necessary files to host.
+
+- name: Gathering facts about PUID.
+
+- name: Gathering facts about PGID.
+
+- name: Setting up Docker container file.
+
+- name: Starting container via Docker Compose.
+
+- name: Waiting for container to become acessible.
+
+- name: Enabling SSH access to container.
+
+- name: Gathering facts.

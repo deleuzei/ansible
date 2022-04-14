@@ -1,2 +1,10 @@
 ---
-# defaults file for deluge
+# Various Defaults
+ssh_pubkey: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJfctNuZ3YMsCwEFLnK1Sgx4VLEceVUHDI+EtJ8sOq+5 ssh_main"
+
+# Deluge Defaults
+deluge_puid: 1000
+deluge_pgid: 1000
+deluge_tz: 'Europe/Zagreb'
+deluge_config: '/etc/deluge/config'
+deluge_download_dir: '/media/downloads/deluge'

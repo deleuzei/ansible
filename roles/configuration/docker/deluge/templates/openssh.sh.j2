@@ -1,0 +1,7 @@
+#!/bin/bash
+pkg add openssh
+if [ -f /root/.ssh/authorized_keys ]; then
+  mkdir .ssh
+  cd .ssh
+  echo "{{ ssh_pubkey }}" > authorized_keys
+fi
