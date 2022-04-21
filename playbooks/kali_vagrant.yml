@@ -9,5 +9,4 @@
 - name: Initalize host.
   hosts: vagrant
   roles:
-    - setup/ssh_check_remote
     - setup/init

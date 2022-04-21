@@ -4,9 +4,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.ssh.insert_key = {{ ssh_insert_key }}
     config.vm.synced_folder ".", "/vagrant", disabled: true
 
-    config.vm.provider :virtualbox do |virtualbox|
-      virtualbox.gui = {{ provider_gui }}
-      virtualbox.memory = {{ provider_memory }}
+    config.vm.provider :virtualbox do |provider|
+      provider.gui = {{ provider_gui }}
+      provider.memory = {{ provider_memory }}
+      provider.cpus = {{ provider_cpus }}
     end
 
     config.vm.define "{{ hostname }}" do |host|
