@@ -17,7 +17,11 @@
         ansible_user: vagrant
         ansible_ssh_private_key_file: "{{ role_path }}/files/.vagrant/machines/{{ hostname }}/virtualbox/private_key"
         ansible_ssh_extra_args: "-o StrictHostKeyChecking=no"
-
+    
+    - name: Adding Vagrant hosts's ssh key to ssh agent.
+      shell:
+        cmd: "ssh-add {{ role_path }}/files/.vagrant/machines/{{ hostname }}/virtualbox/private_key"
+        
   # - name: Add newly deployed host to /etc/hosts.
   #   lineinfile:
   #     state: present

@@ -20,8 +20,24 @@
 - name: Generate Wireguard public and private keys
   shell:
     cmd: "if ! test -f /etc/wireguard/keys/local.privkey; then wg genkey | tee /etc/wireguard/keys/local.privkey | wg pubkey | tee /etc/wireguard/keys/local.pubkey; fi"
-  notify: register public key
-    register private key
+
+- name: Accessing Wireguard public key
+  command:
+    cmd: "cat /etc/wireguard/keys/local.pubkey"
+  register: node_pubkey
+
+- name: Registering Wireguard public key
+  command:
+    cmd: node_pubkey="{{ node_pubkeyf.stdout }}"
+
+- name: Accessing Wireguard private key
+  command:
+    cmd: "cat /etc/wireguard/keys/local.privkey"
+  register: node_privkey
+
+- name: Registering Wireguard private key
+  set_fact: node_privkey="{{ node_privkey.stdout }}"
+
 # TODO
 # Address in POSTROUTING table should not be hardcoded
 # Find a better way to manage IP tables

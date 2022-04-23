@@ -2,10 +2,14 @@
 - name: Generate pre-shared key
   shell:
     cmd: "wg genkey | tee /etc/wireguard/keys/local.psk"
-  notify: register psk
-  
-- name: Forcing running of all handlers
-  meta: flush_handlers
+
+- name: Acessing Wireguard pre-shared key
+  command:
+    cmd: "cat /etc/wireguard/keys/local.psk"
+  register: psk
+
+- name: Registering Wireguard pre-shared key
+  set_fact: psk="{{ psk.stdout }}"
 
 - name: Add the pre-shared key to local peer configuration
   lineinfile:

@@ -1,40 +1,7 @@
 ---
-- name: Rest default Wireguard interface
-  command:
-    cmd: "wg-quick down wg0 && wg-quick up wg0"
-  become: true
-  listen: reset wireguard
-
-- name: Register Wireguard public key
-  command:
-    cmd: "cat /etc/wireguard/keys/local.pubkey"
-  register: node_pubkey
-  listen: register public key
-  notify: register public key 2
-
-- name: Register Wireguard public key
-  command:
-    cmd: node_pubkey="{{ node_pubkeyf.stdout }}"
-  listen: register public key 2
-
-- name: register private key
-  command:
-    cmd: "cat /etc/wireguard/keys/local.privkey"
-  register: node_privkey
-  listen: register private key
-  notify: register private key 2
-
-- name: Register Wireguard public key
-  set_fact: node_privkey="{{ node_privkey.stdout }}"
-  listen: register private key 2
-
-- name: Register Wireguard pre-shared key
-  command:
-    cmd: "cat /etc/wireguard/keys/local.psk"
-  register: psk
-  listen: register psk
-  notify: register psk 2
-
-- name: Register Wireguard pre-shared key
-  set_fact: psk="{{ psk.stdout }}"
-  listen: register psk 2
+# main handlers yml for configuration/wireguard/master role
+# - name: Restarting Wireguard interface
+#   command:
+#     cmd: "wg-quick down wg0 && wg-quick up wg0"
+#   become: true
+#   listen: reset wireguard

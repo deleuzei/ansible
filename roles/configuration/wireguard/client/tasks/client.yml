@@ -21,12 +21,23 @@
 - name: Generating Wireguard public and private keys
   shell:
     cmd: "if ! test -f /etc/wireguard/keys/local.privkey; then wg genkey | tee /etc/wireguard/keys/local.privkey | wg pubkey | tee /etc/wireguard/keys/local.pubkey; fi"
-  notify: 
-    - register public key
-    - register private key
 
-- name: Forcing running of all handlers
-  meta: flush_handlers
+- name: Accessing Wireguard public key
+  command:
+    cmd: "cat /etc/wireguard/keys/local.pubkey"
+  register: node_pubkey
+
+- name: Registering Wireguard public key
+  command:
+    cmd: node_pubkey="{{ node_pubkeyf.stdout }}"
+
+- name: Accessing Wireguard private key
+  command:
+    cmd: "cat /etc/wireguard/keys/local.privkey"
+  register: node_privkey
+
+- name: Registering Wireguard private key
+  set_fact: node_privkey="{{ node_privkey.stdout }}"
 
 - name: Configuring Wireguard interface
   blockinfile:
@@ -42,7 +53,7 @@
       PostUp= wg addconf /etc/wireguad/peers/*
       DNS = "{{ wg_dns }}"
 
-- name: Create or update Wireguard master peer configuration
+- name: Configuring Wireguard master peer configuration
   blockinfile:
     path: "/etc/wireguard/peers/master.conf"
     marker: "{mark}"
@@ -55,7 +66,11 @@
       Endpoint = {{ hostvars['wg_master']['ansible_host']  }}:{{ master_port }}
       AllowedIPs = {{ allowed_ips }}
 
-- name: Enable Wireguard service
+- name: Restarting Wireguard interface
+  command:
+    cmd: "wg-quick down wg0 && wg-quick up wg0"
+    
+- name: Enabling Wireguard systemd service
   service:
     name: wg-quick@wg0
     enabled: yes
