@@ -2,14 +2,11 @@
 - name: Configuring Wireguard client node
   import_tasks: client.yml
   become: true
-  notify: reset wireguard
 
 - name: Configuring Wireguad master node
   import_tasks: master.yml
   become: true
-  notify: reset wireguard
 
 - name: Configuring preshared keys
   import_tasks: psk.yml
   become: true
-  notify: reset wireguard
