@@ -1,4 +1,5 @@
 ---
+# main task file for configuration/wireguard/client role
 - name: Configuring Wireguard client node
   import_tasks: client.yml
   become: true

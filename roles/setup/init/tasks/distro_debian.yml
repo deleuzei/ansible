@@ -45,13 +45,13 @@
   tags:
     - slow
 
-- name: Copy unattended-upgrades configuration files in place.
-  template:
-    src: "../templates/{{ item }}.j2"
-    dest: "/etc/apt/apt.conf.d/{{ item }}"
-    owner: root
-    group: root
-    mode: 0644
-  with_items:
-    - 20auto-upgrades
-    - 50unattended-upgrades
+# - name: Copy unattended-upgrades configuration files in place.
+#   template:
+#     src: "../templates/{{ item }}.j2"
+#     dest: "/etc/apt/apt.conf.d/{{ item }}"
+#     owner: root
+#     group: root
+#     mode: 0644
+#   with_items:
+#     - 20auto-upgrades
+#     - 50unattended-upgrades

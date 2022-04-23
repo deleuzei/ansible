@@ -24,4 +24,4 @@
     state: present
     regxp: "^PreSharedKey"
     line: "^PresharedKey = {{ psk }}"
-  delegate_to: "{{ hostvars['wg_master']['ansible_host'] }}"
+  delegate_to: "{{ hostvars['wg_master_node']['ansible_host'] }}"

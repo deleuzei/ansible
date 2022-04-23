@@ -1,4 +1,5 @@
 ---
+# main task file for configuration/wireguard/master role
 - name: Install Wireguard package
   apt:
     cache_valid_time: 3600
@@ -28,7 +29,7 @@
 
 - name: Registering Wireguard public key
   command:
-    cmd: node_pubkey="{{ node_pubkeyf.stdout }}"
+    cmd: node_pubkey="{{ node_pubkey.stdout }}"
 
 - name: Accessing Wireguard private key
   command:

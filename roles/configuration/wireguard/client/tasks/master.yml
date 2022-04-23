@@ -16,5 +16,5 @@
   - name: Restarting Wireguard interface
     command:
       cmd: "wg-quick down wg0 && wg-quick up wg0"
-  delegate_to: "{{ hostvars['wg_master']['ansible_host'] }}"
+  delegate_to: "{{ hostvars['wg_master_node']['ansible_host'] }}"
   become: true
