@@ -10,3 +10,4 @@
   hosts: vagrant
   roles:
     - setup/init
+    - configuration/wireguard/client

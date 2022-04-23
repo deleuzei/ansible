@@ -1,0 +1,13 @@
+---
+- name: Deploying Debian on Digital Ocean.
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  roles:
+    - deployment/digitalocean/debian
+
+- name: Initialize Debian.
+  hosts: do
+  remote_user: root
+  roles:
+    - setup/init

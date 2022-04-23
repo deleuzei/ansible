@@ -3,6 +3,9 @@
   shell:
     cmd: "wg genkey | tee /etc/wireguard/keys/local.psk"
   notify: register psk
+  
+- name: Forcing running of all handlers
+  meta: flush_handlers
 
 - name: Add the pre-shared key to local peer configuration
   lineinfile:

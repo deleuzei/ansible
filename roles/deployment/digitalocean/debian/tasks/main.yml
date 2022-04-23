@@ -1,2 +1,57 @@
 ---
-# tasks file for roles/deployment/digitalocean/debian
+# - name: Destroy existing droplet.
+#   digital_ocean_droplet:
+#     state: absent
+#     name: "{{ do_droplet_hostname }}"
+#     unique_name: yes
+
+# - name: Wait for the existing droplet to be destroyed.
+#   wait_for_connection:
+#     delay: 10
+
+- name: Create new droplet.
+  digital_ocean_droplet:
+    state: present
+    name: "{{ do_droplet_hostname }}"
+    size: "{{ do_droplet_size }}"
+    api_token: "{{ do_api_token }}"
+    unique_name: yes
+    private_networking: yes
+    image_id: "{{ do_image_id }}"
+    region: ams3
+    ipv6: yes
+    ssh_keys:
+      - "{{ do_droplet_ssh_key }}"
+    monitoring: no
+  register: do
+
+- name: Register IP address.
+  set_fact:
+    do_droplet_ip_address: "{{ (do.data.droplet.networks.v4 | selectattr('type', 'equalto', 'public')).0.ip_address | default('<none>', true) }}"
+
+- name: Print IP address.
+  debug:
+    msg: "{{ do_droplet_ip_address }}"
+
+- name: Add new host to inventory.
+  add_host:
+    host: "{{ do_droplet_ip_address }}"
+    #ansible_host: "{{ do_droplet_hostname }}"
+    groups: do
+    ansible_user: root
+    ansible_ssh_extra_args: "-o StrictHostKeyChecking=no"
+  when: do.data is defined
+  changed_when: false
+
+# - name: Add newly deployed host to /etc/hosts.
+#   lineinfile:
+#     state: present
+#     path: /etc/hosts
+#     regex: "^.*{{ do_droplet_hostname }}"
+#     line: "{{ do_droplet_ip_address }} {{ do_droplet_hostname }}"
+#   when: do.data is defined
+#   become: true
+
+- name: Wait for host to become reachable.
+  wait_for_connection:
+    delay: 10

@@ -1,16 +1,16 @@
 ---
 - block:
-    - name: Create Vagrantfile from template.
+    - name: Creating Vagrantfile
       template:
         src: "{{ role_path }}/{{ vagrantfile_src }}"
         dest: "{{ role_path }}/files/Vagrantfile"
 
-    - name: Bring Vagrant host up.
+    - name: Bringing Vagrant host up
       command:
         cmd: "vagrant up"
         chdir: "{{ role_path }}/files"
 
-    - name: Add new host to inventory.
+    - name: Adding new host to the Ansible inventory
       add_host:
         host: "{{ ipv4_address }}"
         groups: vagrant
@@ -27,7 +27,7 @@
   #   become: true
 
   rescue:
-    - name: Destroy Vagrant host.
+    - name: Destroying Vagrant host.
       command:
         cmd: "vagrant destroy --force --parallel"
         chdir: "{{ role_path }}/files"

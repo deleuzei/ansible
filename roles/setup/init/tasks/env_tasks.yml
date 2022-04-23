@@ -1,22 +1,22 @@
 ---
-- name: Install Oh-My-Zsh.
+- name: Installing Oh-My-Zsh
   shell:
     cmd: sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --skip-chsh
     creates: "{{ user_home_dir }}/.oh-my-zsh"
 
-- name: Install Powerlevel10k.
+- name: Installing powerlevel10k
   git:
     repo: "https://github.com/romkatv/powerlevel10k.git"
     dest: "{{ user_home_dir }}/.powerlevel10k"
     update: no
 
-- name: Install Zsh Syntax Highlighting.
+- name: Installing zsh syntax highlighting
   git:
     repo: "https://github.com/zsh-users/zsh-syntax-highlighting.git"
     dest: "{{ user_home_dir }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
     update: no
 
-- name: Install Zsh Completions
+- name: Installing zsh completions
   git:
     repo: "https://github.com/zsh-users/zsh-completions"
     dest: "{{ user_home_dir }}/.oh-my-zsh/custom/plugins/zsh-completions"

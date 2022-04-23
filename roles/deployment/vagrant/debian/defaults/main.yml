@@ -1,2 +1,4 @@
 ---
 # defaults file for debian
+ipv4_address: "192.168.56.2"
+vagrantfile_src: "templates/Vagrantfile.j2"

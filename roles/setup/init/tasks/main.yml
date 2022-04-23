@@ -1,15 +1,24 @@
 ---
 - block:
-    - name: Perform initial system setup for Kali Linux.
+    - name: Performing initial system setup for Kali Linux.
       include_tasks: "{{ item }}"
       loop:
         - distro_debian.yml
         - distro_kali.yml
       when: '"Kali" is in ansible_os_family'
 
-    - name: Perform initial system setup for all systems.
-      include_tasks: "distro_{{ ansible_os_family|lower }}.yml"
+    - name: Performing initial system setup for Vagrant managed Debian .
+      include_tasks: "{{ item }}"
+      loop:
+        - distro_debian.yml
+      when: ansible_hostname == 'vagrant-debian'
 
+    - name: Performing initial system setup for Debian morphed Kali
+      include_tasks: "{{ item }}"
+      loop:
+        - distro_kali_debian.yml
+        - distro_kali.yml
+      when: ansible_hostname == "debian-kali" 
   become: true
 
 - name: Setup shell environment.

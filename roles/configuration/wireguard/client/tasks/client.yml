@@ -1,12 +1,12 @@
 ---
-- name: Install Wireguard package
+- name: Installing Wireguard package
   apt:
     cache_valid_time: 3600
     update_cache: yes
     name: wireguard
     state: latest
 
-- name: Ensure that Wireguard configuration directories exists
+- name: Ensuring that Wireguard configuration directories exists
   file:
     path: "{{ item }}"
     state: directory
@@ -18,13 +18,17 @@
     - /etc/wireguard/keys
     - /etc/wiregurad/peers
 
-- name: Generate Wireguard public and private keys
+- name: Generating Wireguard public and private keys
   shell:
     cmd: "if ! test -f /etc/wireguard/keys/local.privkey; then wg genkey | tee /etc/wireguard/keys/local.privkey | wg pubkey | tee /etc/wireguard/keys/local.pubkey; fi"
-  notify: register public key
-    register private key
+  notify: 
+    - register public key
+    - register private key
 
-- name: Create or update Wireguard interface configuration
+- name: Forcing running of all handlers
+  meta: flush_handlers
+
+- name: Configuring Wireguard interface
   blockinfile:
     path: "/etc/wireguard/wg0.conf"
     marker: "{mark}"
@@ -33,10 +37,10 @@
     create: yes
     block: |
       [Interface]
-      Address = {{ internal_ip }}
+      Address = {{ wg_ip }}
       PrivateKey = {{ node_privkey }}
       PostUp= wg addconf /etc/wireguad/peers/*
-      DNS = "{{ main_dns }}"
+      DNS = "{{ wg_dns }}"
 
 - name: Create or update Wireguard master peer configuration
   blockinfile:

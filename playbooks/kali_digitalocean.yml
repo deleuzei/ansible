@@ -4,12 +4,10 @@
   connection: local
   gather_facts: false
   roles:
-    - setup/ssh_check_local
     - deployment/digitalocean/kali
 
 - name: Initialize Kali Linux.
   hosts: digitalocean
   remote_user: root
   roles:
-    - setup/ssh_check_remote
     - setup/init

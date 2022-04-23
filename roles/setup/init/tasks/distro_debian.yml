@@ -20,15 +20,30 @@
 #     dest: /etc/gcrypt/hwf.deny
 #     state: touch
 
-- name: Update package cache and upgrade system.
+- name: Updating package cache.
   apt:
     cache_valid_time: 3600
+    update_cache: yes
+
+    
+- name: Performing distribution upgrade.
+  apt:
     upgrade: dist
+  tags:
+    - slow
 
 - name: Install basic system packages
   apt:
-    name: "{{ packages_debian }}"
+    name: "{{ packages_debian_default }}"
     state: latest
+
+
+- name: Install additional system packages
+  apt:
+    name: "{{ packages_debian_additional }}"
+    state: latest
+  tags:
+    - slow
 
 - name: Copy unattended-upgrades configuration files in place.
   template:

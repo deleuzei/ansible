@@ -1,0 +1,45 @@
+---
+# tasks file that kalifies a regular debian installation
+- block:
+  - name: Updating apt cache.
+    apt:
+      update_cache: yes
+
+  - name: Installing packages necessary to morph Debian into Kali.
+    apt:
+      state: present
+      pkg: 
+        - wget
+        - gnupg
+        - dirmngr
+
+  - name:  Adding Kali repository keys.
+    shell:
+      cmd: >
+        wget -q -O - https://archive.kali.org/archive-key.asc | gpg --import;
+        gpg --keyserver keyserver.ubuntu.com --recv-key 44C6513A8E4FB3D30875F758ED444FF07D8D0BF6;
+        gpg -a --export ED444FF07D8D0BF6 | sudo apt-key add -;
+
+  - name: Removing existing /etc/apt/sources.list.
+    file:
+      path: /etc/apt/sources.list
+      state: absent
+      
+
+  - name: Ensuring that Kali repositories is present in /etc/apt/sources.list
+    lineinfile:
+      path: "/etc/apt/sources.list"
+      state: present
+      create: yes
+      line: "{{ item }}"
+    with_items:
+      - "deb http://http.kali.org/kali kali-rolling main non-free contrib"
+      - "deb http://http.kali.org/kali kali-last-snapshot main non-free contrib"
+
+
+  - name: Morphing Debian into Kali
+    apt:
+      update_cache: yes
+      upgrade: dist
+      autoremove: yes
+  become: true

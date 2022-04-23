@@ -38,10 +38,10 @@
     create: yes
     block: |
       [Interface]
-      Address = {{ internal_ip }}
+      Address = {{ wg_ip }}
       ListenPort = {{ master_port }}
       PrivateKey = {{ node_privkey }}
-      DNS = {{ main_dns }}
+      DNS = {{ wg_dns }}
       PostUp = ping -c1 8.8.8.8
 
       PostUp = iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
