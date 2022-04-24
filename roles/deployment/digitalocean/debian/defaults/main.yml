@@ -1,7 +1,8 @@
 ---
 # defaults file for roles/deployment/digitalocean/debian
+do_droplet_hostname: default
 do_droplet_size: "s-2vcpu-2gb-intel"
-do_droplet_hostname: "debian-kali"
 do_api_token: "dop_v1_029b82b93583fb23a4dbb4bb90b28bf447f8203fec62bb8eac0aec46b0cc6334"
 do_droplet_ssh_key: "d2:50:66:64:37:12:d1:4f:59:0e:27:c8:e0:08:68:f9"
-do_image_id: "106569146"
+# debian-11-x64
+do_image_id: "106557160"

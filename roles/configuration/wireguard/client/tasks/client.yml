@@ -17,7 +17,7 @@
   loop:
     - /etc/wireguard
     - /etc/wireguard/keys
-    - /etc/wiregurad/peers
+    - /etc/wireguard/peers
 
 - name: Generating Wireguard public and private keys
   shell:
@@ -63,35 +63,40 @@
   blockinfile:
     path: "/etc/wireguard/wg0.conf"
     marker: "{mark}"
-    marker_begin: "# ANSIBLE MANAGED INTERFACE BLOCK BEGIN"
-    marker_end: "# ANSIBLE MANAGED INTERFACE BLOCK BEGIN"
+    marker_begin: "# interface begin"
+    marker_end: "# interface end"
     create: yes
+    backup: yes
     block: |
       [Interface]
-      Address = {{ wg_ip }}
+      Address = {{ wg_ip }}/32
       PrivateKey = {{ local_node_privkey }}
-      PostUp= wg addconf /etc/wireguad/peers/*
-      DNS = "{{ wg_dns }}"
+      PostUp = wg addconf wg0 /etc/wireguard/peers/master.conf
+      DNS = {{ wg_dns }}
 
 - name: Configuring Wireguard master peer configuration
   blockinfile:
-    path: "/etc/wireguard/peers/wg0.conf"
+    path: "/etc/wireguard/peers/master.conf"
     marker: "{mark}"
-    marker_begin: "# ANSIBLE MANAGED PEER BLOCK BEGIN"
-    marker_end: "# ANSIBLE MANAGED PEER BLOCK END"
+    marker_begin: "# master begin"
+    marker_end: "# master end"
     create: yes
+    backup: yes
     block: |
       [Peer]
       PublicKey = {{ master_node_pubkey }}
       Endpoint = {{ hostvars['wg_master_node']['ansible_host']  }}:{{ wg_port }}
       AllowedIPs = {{ allowed_ips }}
+      PersistentKeepalive = 25
 
 - name: Restarting Wireguard interface
-  command:
-    cmd: "wg-quick down wg0 && wg-quick up wg0"
-    
+  shell:
+    cmd: "wg-quick down wg0 ; wg-quick up wg0"
+  ignore_errors: true
+
 - name: Enabling Wireguard systemd service
   service:
     name: wg-quick@wg0
     enabled: yes
-    state: enabled
+    state: started
+  ignore_errors: true

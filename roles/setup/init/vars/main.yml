@@ -11,14 +11,18 @@ packages_debian_default:
   mosh,
   tmux,
   rsync,
-  htop
+  htop,
+  nmap,
+  net-tools,
+  tree,
+  speedtest-cli,
+  iperf3,
+  xauth,
+  dbus-x11,
+  mousepad
   ]
 packages_debian_additional:
   [
-    net-tools,
-    tree,
-    speedtest-cli,
-    iperf,
     ufw,
     gufw,
   ]

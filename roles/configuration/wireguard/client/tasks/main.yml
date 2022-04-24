@@ -1,13 +1,22 @@
 ---
 # main task file for configuration/wireguard/client role
-- name: Configuring Wireguard client node
-  import_tasks: client.yml
+- block:
+  - name: Configuring Wireguard client node
+    import_tasks: client.yml
   become: true
 
-- name: Configuring Wireguad master node
-  import_tasks: master.yml
+- block:
+  - name: Configuring Wireguard master node
+    import_tasks: master.yml
+  remote_user: root
+  delegate_to: "{{ hostvars['wg_master_node']['ansible_host'] }}"
   become: true
 
-- name: Configuring preshared keys
-  import_tasks: psk.yml
-  become: true
+# - block:
+#   - name: Configuring preshared keys
+#     import_tasks: psk.yml
+#   become: true
+
+- name: Reboot client node.
+  reboot:
+  

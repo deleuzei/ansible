@@ -16,7 +16,7 @@
   loop:
     - /etc/wireguard
     - /etc/wireguard/keys
-    - /etc/wiregurad/peers
+    - /etc/wireguard/peers
 
 - name: Generate Wireguard public and private keys
   shell:

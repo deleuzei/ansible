@@ -4,10 +4,10 @@
   connection: local
   gather_facts: false
   roles:
-    - deployment/digitalocean/debian
+    - { role: deployment/digitalocean/debian, do_droplet_hostname: debian }
 
 - name: Initalize host.
-  hosts: vagrant
+  hosts: do
   roles:
     - setup/init
-    - configuration/wireguard/client
+    - { role: configuration/wireguard/client, wg_ip: 192.168.3.17 }

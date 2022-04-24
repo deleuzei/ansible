@@ -1,12 +1,9 @@
 ---
-- name: Installing default Debian packages.
-  apt:
-    name: "{{ packages_debian }}"
-    state: latest
-
 - name: Installing default Kali Linux packages.
   apt:
     name: "{{ packages_kali }}"
+  tags:
+    - slow
 
 - name: Configure XRDP.
   replace:

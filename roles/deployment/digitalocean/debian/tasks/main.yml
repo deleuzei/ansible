@@ -4,6 +4,8 @@
 #     state: absent
 #     name: "{{ do_droplet_hostname }}"
 #     unique_name: yes
+#   tag:
+#     - kill
 
 # - name: Wait for the existing droplet to be destroyed.
 #   wait_for_connection:
