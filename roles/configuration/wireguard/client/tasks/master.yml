@@ -1,20 +1,25 @@
 ---
-- block: 
-  - name: Configuring Wireguad master node
-    blockinfile:
-      path: "/etc/wireguard/peers/{{ inventory_hostname_short }}.conf"
-      marker: "{mark}"
-      marker_begin: "# ANSIBLE MANAGED BLOCK BEGIN"
-      marker_end: "# ANSIBLE MANAGED BLOCK END"
-      create: yes
-      block: |
-        [Peer]
-        PublicKey = {{ node_pubkey }}
-        AllowedIPs = {{ wg_ip }}
-        PersistentKeepalive = 25
 
-  - name: Restarting Wireguard interface
-    command:
-      cmd: "wg-quick down wg0 && wg-quick up wg0"
-  delegate_to: "{{ hostvars['wg_master_node']['ansible_host'] }}"
-  become: true
+- name: Configuring Wireguard peer conf
+  blockinfile:
+    path: "/etc/wireguard/peers/{{ ansible_hostname }}.conf"
+    marker: "{mark}"
+    marker_begin: "# {{ ansible_hostname }} begin"
+    marker_end: "# {{ ansible_hostname }} end"
+    create: yes
+    block: |
+      [Peer]
+      PublicKey = {{ local_node_pubkey }}
+      AllowedIPs = {{ wg_ip }}/32
+
+- name: Configuring Wireguad master conf
+  lineinfile:
+    path: "/etc/wireguard/wg0.conf"
+    state: present
+    line: PostUp = wg addconf wg0 /etc/wireguard/peers/{{ ansible_hostname }}.conf
+
+- name: Restarting Wireguard interface
+  shell:
+    cmd: "wg-quick down wg0 && wg-quick up wg0"
+  ignore_errors: true
+
