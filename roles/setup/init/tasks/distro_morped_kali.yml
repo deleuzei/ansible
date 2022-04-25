@@ -1,6 +1,12 @@
 ---
 # tasks file that kalifies a regular debian installation
 - block:
+
+  - name: Set up locale.
+    locale_gen:
+      name: en_US.UTF-8
+      state: present
+
   - name: Updating apt cache.
     apt:
       update_cache: yes

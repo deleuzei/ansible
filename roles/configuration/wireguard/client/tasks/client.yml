@@ -70,9 +70,10 @@
     block: |
       [Interface]
       Address = {{ wg_ip }}/32
-      PrivateKey = {{ local_node_privkey }}
-      PostUp = wg addconf wg0 /etc/wireguard/peers/master.conf
       DNS = {{ wg_dns }}
+      PostUp = wg set %i private-key "/etc/wireguard/keys/local.privkey"
+      PostUp = wg addconf wg0 /etc/wireguard/peers/master.conf
+      
 
 - name: Configuring Wireguard master peer configuration
   blockinfile:

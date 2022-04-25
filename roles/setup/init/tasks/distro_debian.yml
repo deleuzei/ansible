@@ -8,25 +8,7 @@
   locale_gen:
     name: en_US.UTF-8
     state: present
-
-
-# Debugging hash mismatch
-# - name: Debugging hash mismatch
-#   file:
-#     dest: /etc/gcrypt
-#     state: directory
-
-# - name: Debugging hash mismatch
-#   file:
-#     dest: /etc/gcrypt/hwf.deny
-#     state: touch
-
-# - name: Removing existing sources.list
-#   file:
-#     path: /etc/apt/sources.list
-#     state: absent
       
-
 - name: Ensuring that Debian Bullseye backport repositories are present in sources.list
   lineinfile:
     path: "/etc/apt/sources.list"

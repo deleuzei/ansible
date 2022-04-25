@@ -19,7 +19,9 @@ packages_debian_default:
   iperf3,
   xauth,
   dbus-x11,
-  mousepad
+  mousepad,
+  lynx,
+  text2html
   ]
 packages_debian_additional:
   [
