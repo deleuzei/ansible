@@ -1,5 +1,5 @@
 ---
-hostname: "vagrant-kali"
+hostname: "kali"
 vm_box: "kalilinux/rolling"
 
 ssh_insert_key: "true"

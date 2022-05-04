@@ -1,25 +1,18 @@
 ---
 - block:
-    - name: Performing initial system setup for Kali Linux.
-      include_tasks: "{{ item }}"
-      loop:
-        - distro_debian.yml
-        - distro_kali.yml
-      when: ansible_hostname == "kali" 
-
-    - name: Performing initial system setup for Vagrant managed Debian .
-      include_tasks: "{{ item }}"
-      loop:
-        - distro_debian.yml
-      when: ansible_hostname == 'vagrant-debian'
-
     - name: Performing initial system setup for Debian.
       include_tasks: "{{ item }}"
       loop:
         - distro_debian.yml
-      when: ansible_hostname == "debian" 
+      when: ansible_hostname == 'vagrant-debian' or ansible_hostname == "debian" 
 
-    - name: Performing initial system setup for Debian morphed Kali
+    - name: Performing initial system setup for Kali Linux.
+      include_tasks: "{{ item }}"
+      loop:
+        - distro_kali.yml
+      when: ansible_hostname == "kali"
+
+    - name: Performing initial system setup for Debian Kali Linux.
       include_tasks: "{{ item }}"
       loop:
         - distro_morped_kali.yml

@@ -1,4 +1,31 @@
 ---
+# - name: Purge existing locales
+#   locale_gen:
+#     name: "*"
+#     state: absent
+
+- name: Set up locale.
+  locale_gen:
+    name: en_US.UTF-8
+    state: present
+
+- name: Updating package cache.
+  apt:
+    cache_valid_time: 3600
+    update_cache: yes
+
+    
+- name: Performing distribution upgrade.
+  apt:
+    upgrade: dist
+  tags:
+    - slow
+
+- name: Install basic system packages
+  apt:
+    name: "{{ packages_debian_default }}"
+    state: latest
+
 - name: Installing default Kali Linux packages.
   apt:
     name: "{{ packages_kali }}"
