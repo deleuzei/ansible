@@ -22,6 +22,17 @@ packages_debian_default:
   mousepad,
   lynx,
   ]
+packages_opensuse_default:
+  [
+  acl,
+  zsh,
+  git,
+  mosh,
+  tmux,
+  rsync,
+  tree
+  ]
+
 packages_debian_additional:
   [
     ufw,

@@ -1,1 +1,1 @@
-/home/dionysos/.p10k.zsh
+/home/user/.p10k.zsh

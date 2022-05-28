@@ -1,0 +1,38 @@
+---
+- block:
+    - name: Create Vagrantfile from template.
+      template:
+        src: "Vagrantfile.j2"
+        dest: "{{ role_path }}/files/Vagrantfile"
+    
+    # - name: Destroying existing Vagrant host.
+    #   command:
+    #     cmd: "vagrant destroy -f"
+    #     chdir: "{{ role_path }}/files"
+
+    - name: Bring Vagrant host up.
+      command:
+        cmd: "vagrant up"
+        chdir: "{{ role_path }}/files"
+
+    - name: Add new host to inventory.
+      add_host:
+        host: "{{ ipv4_address }}"
+        groups: vagrant
+        ansible_user: vagrant
+        ansible_ssh_private_key_file: "{{ ssh_key_path }}"
+        ansible_ssh_extra_args: "-o StrictHostKeyChecking=no"
+
+  # - name: Add newly deployed host to /etc/hosts.
+  #   lineinfile:
+  #     state: present
+  #     path: /etc/hosts
+  #     regex: "^.*{{ hostname }}"
+  #     line: "{{ ipv4_address }} {{ hostname }}"
+  #   become: true
+
+  rescue:
+    - name: Destroy Vagrant host.
+      command:
+        cmd: "vagrant destroy --force --parallel"
+        chdir: "{{ role_path }}/files"

@@ -1,0 +1,12 @@
+---
+- name: Deploy on the local machine using Vagrant.
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  roles:
+    - deployment/vagrant/opensuse
+
+- name: Initalize host.
+  hosts: vagrant
+  roles:
+    - setup/init

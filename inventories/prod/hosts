@@ -5,11 +5,14 @@ wg_rpi4 ansible_host=192.168.3.4
 wg_mi11 ansible_host=192.168.3.7
 wg_notepro ansible_host=192.168.3.9
 
+[envy]
+192.168.0.3
+
 [wg_master]
 wg_master_node ansible_host=167.172.36.236
 
 [wg_client]
-wg_envy ansible_host=192.168.3.2
+wg_envy ansible_host=192.168.3.3
 wg_rpi4 ansible_host=192.168.3.4
 wg_mi11 ansible_host=192.168.3.7
 wg_notepro ansible_host=192.168.3.9

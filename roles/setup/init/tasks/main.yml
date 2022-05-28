@@ -18,6 +18,12 @@
         - distro_morped_kali.yml
         - distro_kali.yml
       when: ansible_hostname == "debian-kali" 
+
+    - name: Performing initial system setup for Debian Kali Linux.
+      include_tasks: "{{ item }}"
+      loop:
+        - distro_opensuse.yml
+      when: ansible_hostname == "vagrant-opensuse" 
   become: true
 
 - name: Setup shell environment.

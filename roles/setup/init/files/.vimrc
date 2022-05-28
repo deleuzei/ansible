@@ -1,1 +1,1 @@
-/home/dionysos/.vimrc
+/home/user/.vimrc

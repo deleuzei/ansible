@@ -1,0 +1,42 @@
+---
+# - name: Purge existing locales
+#   locale_gen:
+#     name: "*"
+#     state: absent
+
+
+
+    
+- name: Performing distribution upgrade...
+  zypper:
+    name: '*'
+    state: dist-upgrade
+    update_cache: yes
+  tags:
+    - slow
+
+- name: Installing basic system packages...
+  zypper:
+    name: "{{ packages_opensuse_default }}"
+    state: latest
+
+
+- name: Installing opensuse graphical environment
+  zypper:
+    name: [kde, kde_plasma]
+    type: pattern
+    state: latest
+  tags:
+    - slow
+
+
+# - name: Copy unattended-upgrades configuration files in place.
+#   template:
+#     src: "../templates/{{ item }}.j2"
+#     dest: "/etc/apt/apt.conf.d/{{ item }}"
+#     owner: root
+#     group: root
+#     mode: 0644
+#   with_items:
+#     - 20auto-upgrades
+#     - 50unattended-upgrades

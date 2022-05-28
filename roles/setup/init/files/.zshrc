@@ -1,1 +1,1 @@
-/home/dionysos/.zshrc
+/home/user/.zshrc

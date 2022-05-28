@@ -1,0 +1,10 @@
+---
+hostname: "vagrant-opensuse"
+vm_box: "opensuse/Leap-15.4.x86_64"
+
+ssh_insert_key: "false"
+ssh_key_path: "{{ role_path }}/files/.vagrant/machines/{{ hostname }}/virtualbox/private_key"
+provider_gui: "false"
+provider_memory: 4096
+provider_cpus: 4
+ipv4_address: "192.168.56.3"
